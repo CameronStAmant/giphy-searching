@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <button>Get new image</button><br /><br />
+  <form>
+    <input type='text' id='input'>
+    <input type='submit' id='submit'><br /><br />
+  </form>
+  <img src="#" />
+  <script>
+    const img = document.querySelector('img');
+    async function fetchImage(search = 'kitten') {
+      try {
+      let query;
+      if (search === 'kitten') {
+        query = 'https://api.giphy.com/v1/gifs/translate?api_key=mJoafgAhfItUfNeX64zBZqqSBoSFDUy9&s=kitten'
+      } else {
+        query = 'https://api.giphy.com/v1/gifs/translate?api_key=mJoafgAhfItUfNeX64zBZqqSBoSFDUy9&s=' + search;
+      }
+      const response = await fetch(query, {mode: 'cors'})
+      const imageData = await response.json()
+        img.src = imageData.data.images.original.url;
+      } catch(error) {
+        alert('Error, bad search term');
+      };
+    };
+
+      fetchImage();
+
+      const btn = document.querySelector('button');
+      btn.addEventListener('click', () => {
+        fetchImage();
+      });
+
+      const submit = document.getElementById('submit');
+      const input = document.getElementById('input');
+      console.log(submit.value);
+
+      submit.addEventListener('click', (e) => {
+        e.preventDefault();
+        fetchImage(input.value);
+      })
+  </script>
+</body>
+</html>
